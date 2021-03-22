@@ -5,6 +5,8 @@
 # cbjitter.py
 # Measurement of pigpio module callback jitter
 # (c) 2021 @RR_Inyo
+# Released under the MIT license
+# https://opensource.org/licenses/mit-license.php
 #
 
 import sys
