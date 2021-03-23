@@ -19,8 +19,9 @@
 #define PATH        "results.csv"   /* File name to store results
 
 /* Define global variables */
-int k = 0;  /* Number of times the callback function is called */
-FILE *f;    /* File pointer to write results */
+int k = 0;          /* Number of times the callback function is called */
+FILE *f;            /* File pointer to write results */
+uint32_t tick_old;  /* Tick when GPIO connected to green LED changed */
 
 /* Call back function */
 void cbf(int gpio, int level, uint32_t tick)
@@ -33,7 +34,7 @@ void cbf(int gpio, int level, uint32_t tick)
 
     /* Calculate tick difference between GPIO change and callback called */
     uint32_t tick_diff;
-    tick_diff = gpioTick() - tick;
+    tick_diff = gpioTick() - tick_old;
 
     fprintf(f, "%d\t%u\n", k, tick_diff);
 
@@ -79,6 +80,7 @@ int main(int argc, char *argv[])
     /* Execute test */
     printf("cbjitter_2 >>> Executing tests, %d times...\n", ntimes);
     for (k = 0; k < ntimes; k++) {
+        tick_old = gpioTick();
         gpioWrite(GREEN_LED, 1);
         gpioSleep(PI_TIME_RELATIVE, 0, SLEEP_US);
         gpioWrite(GREEN_LED, 0);

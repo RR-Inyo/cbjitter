@@ -5,8 +5,6 @@
 # cbjitter.py
 # Measurement of pigpio module callback jitter
 # (c) 2021 @RR_Inyo
-# Released under the MIT license
-# https://opensource.org/licenses/mit-license.php
 #
 
 import sys
@@ -53,7 +51,7 @@ def cb_interrupt(gpio, level, tick):
     pi.write(RED_LED, 1)
 
     # Calculate tick difference between GPIO change and callback called
-    tick_diff = pigpio.tickDiff(tick, pi.get_current_tick())
+    tick_diff = pigpio.tickDiff(tick_old, pi.get_current_tick())
 
     # Write results to file
     f.write(f'{k}\t{tick_diff}\n')
@@ -68,6 +66,7 @@ cb = pi.callback(GREEN_LED, pigpio.EITHER_EDGE, cb_interrupt)
 # Execute test
 print(f'cbjitter.py >>> Executing tests, {ntimes} times...')
 for k in range(0, ntimes):
+    tick_old = pi.get_current_tick()
     pi.write(GREEN_LED, 1)
     time.sleep(TSLEEP)
     pi.write(GREEN_LED, 0)
