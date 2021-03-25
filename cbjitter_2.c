@@ -67,7 +67,12 @@ int main(int argc, char *argv[])
 
     /* Initialize and set GPIO */
     printf("cbjitter_2 >>> Initializing and setting GPIO...\n");
-    gpioInitialise();
+    if(gpioInitialise() < 0) {
+        printf("pigpio initialization failed.\n");
+        exit(1);
+    } else {
+        printf("pigpio initialization OK.\n");
+    }
     gpioWrite(RED_LED, 0);
     gpioWrite(GREEN_LED, 0);
     gpioSetMode(RED_LED, PI_OUTPUT);

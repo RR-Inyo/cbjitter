@@ -65,8 +65,13 @@ int main(int argc, char *argv[])
     fprintf(f, "k\tTick difference\n");
 
     /* Initialize and set GPIO */
-    printf("cbjitter_1 >>> Initializing and setting GPIO...\n");
-    gpioInitialise();
+    printf("cbjitter_1 >>> Initializing pigpio and setting GPIO...\n");
+    if(gpioInitialise() < 0) {
+        printf("pigpio initialization failed.\n");
+        exit(1);
+    } else {
+        printf("pigpio initialization OK.\n");
+    }
     gpioWrite(RED_LED, 0);
     gpioWrite(GREEN_LED, 0);
     gpioSetMode(RED_LED, PI_OUTPUT);
